@@ -3,10 +3,9 @@ package com.jonathan.repositories
 import com.couchbase.client.java.Bucket
 import com.couchbase.client.java.document.JsonDocument
 import com.couchbase.client.java.document.json.JsonObject
-import com.couchbase.client.java.query.N1qlQuery
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.jonathan.domain.AbstractDomain
-import com.jonathan.support.Query
+import com.jonathan.support.Nickel
 
 abstract class AbstractCouchbaseRepository<D : AbstractDomain>(val bucket: Bucket, val type: Class<D>) {
 
@@ -34,13 +33,13 @@ abstract class AbstractCouchbaseRepository<D : AbstractDomain>(val bucket: Bucke
         return this.bucket.get(id).toObject(this.type)
     }
 
-    fun queryForObject(type: Class<D>, query: Query): D? {
+    fun queryForObject(type: Class<D>, query: Nickel): D? {
         return bucket
                 .query(query.toNickelQuery())
                 .firstOrNull()?.value()?.toObject(type)
     }
 
-    fun queryForList(type: Class<D>, query: Query): List<D>? {
+    fun queryForList(type: Class<D>, query: Nickel): List<D>? {
         return bucket
                 .query(query.toNickelQuery())
                 .map { it -> it.value().toObject(type) }

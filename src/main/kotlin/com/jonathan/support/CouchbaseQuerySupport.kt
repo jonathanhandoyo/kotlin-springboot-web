@@ -30,11 +30,11 @@ interface Expression {
 
 interface Filter: Expression
 
-class Query(val select: Select, val from: From, val where: Where? = null) {
+class Nickel(val select: Select, val from: From, val where: Where? = null) {
     fun toNickelQuery(): N1qlQuery = N1qlQuery.simple(" ${select.toStatement()} ${from.toStatement()} ${where?.toStatement() ?: ""} ")
 }
 
-class Select(vararg val selectors: String): Expression
+class Select(vararg val selectors: String = arrayOf("*")): Expression
 class From(vararg val sources: String): Expression
 class Where(val filter: Filter): Expression
 
@@ -50,9 +50,15 @@ class Not(val expr: Expression): Filter
 fun main(args: Array<String>) {
 
     val test =
-            Query(
+            Nickel(
                     Select("id", "name"),
-                    From("user-account")
+                    From("user-account"),
+                    Where(
+                            And(
+                                    Eq("docType", "user"),
+                                    Eq("id", 5703)
+                            )
+                    )
             )
     println(test.toNickelQuery())
 
