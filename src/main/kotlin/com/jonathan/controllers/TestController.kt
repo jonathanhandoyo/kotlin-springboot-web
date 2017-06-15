@@ -15,6 +15,6 @@ class TestController(val userRepository: UserRepository) {
     @GetMapping("/test/{id}")
     fun test(@PathVariable id: Long): User {
         log.info("here!")
-        return this.userRepository.findById("user::$id")
+        return this.userRepository.findById("usr::$id")
     }
 }

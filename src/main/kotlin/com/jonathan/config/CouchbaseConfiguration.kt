@@ -16,11 +16,11 @@ class CouchbaseConfiguration {
     @Bean fun couchbaseEnvironment(): CouchbaseEnvironment = DefaultCouchbaseEnvironment.builder().autoreleaseAfter(3_000).keepAliveInterval(60_000).build()
 
     @Bean fun accountCluster(couchbaseEnvironment: CouchbaseEnvironment): CouchbaseCluster = CouchbaseCluster.create(couchbaseEnvironment, "cb11.accounts.trakinvest.io")
-    @Bean fun pieCluster(couchbaseEnvironment: CouchbaseEnvironment): CouchbaseCluster = CouchbaseCluster.create(couchbaseEnvironment, "cb03.pie.trakinvest.io")
+    @Bean fun pieCluster    (couchbaseEnvironment: CouchbaseEnvironment): CouchbaseCluster = CouchbaseCluster.create(couchbaseEnvironment, "cb03.pie.trakinvest.io")
 
-    @Bean fun accountBucket(accountCluster: CouchbaseCluster): Bucket = accountCluster.openBucket("user-account")
-    @Bean fun gamesBucket(accountCluster: CouchbaseCluster): Bucket = accountCluster.openBucket("games")
-    @Bean fun snapshotBucket(accountCluster: CouchbaseCluster): Bucket = accountCluster.openBucket("snapshots")
-    @Bean fun stockBucket(pieCluster: CouchbaseCluster): Bucket = pieCluster.openBucket("stocks", "stock")
-    @Bean fun transactionBucket(accountCluster: CouchbaseCluster): Bucket = accountCluster.openBucket("transaction")
+    @Bean fun accountBucket     (accountCluster: CouchbaseCluster): Bucket = accountCluster.openBucket("user-account")
+    @Bean fun gamesBucket       (accountCluster: CouchbaseCluster): Bucket = accountCluster.openBucket("games")
+    @Bean fun snapshotBucket    (accountCluster: CouchbaseCluster): Bucket = accountCluster.openBucket("snapshots")
+    @Bean fun transactionBucket (accountCluster: CouchbaseCluster): Bucket = accountCluster.openBucket("transactions")
+    @Bean fun stockBucket       (pieCluster: CouchbaseCluster): Bucket = pieCluster.openBucket("stocks", "stock")
 }
