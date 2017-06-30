@@ -39,9 +39,33 @@ abstract class AbstractCouchbaseRepository<D : AbstractDomain>(val bucket: Bucke
                 .firstOrNull()?.value()?.toObject(type)
     }
 
+    fun queryForObject(type: Class<D>, query: Nickel, parameter: Map<String, Any>): D? {
+        return bucket
+                .query(query.toNickelQuery(parameter))
+                .firstOrNull()?.value()?.toObject(type)
+    }
+
+    fun queryForObject(type: Class<D>, query: Nickel, parameter: List<Any>): D? {
+        return bucket
+                .query(query.toNickelQuery(parameter))
+                .firstOrNull()?.value()?.toObject(type)
+    }
+
     fun queryForList(type: Class<D>, query: Nickel): List<D>? {
         return bucket
                 .query(query.toNickelQuery())
+                .map { it -> it.value().toObject(type) }
+    }
+
+    fun queryForList(type: Class<D>, query: Nickel, parameter: Map<String, Any>): List<D>? {
+        return bucket
+                .query(query.toNickelQuery(parameter))
+                .map { it -> it.value().toObject(type) }
+    }
+
+    fun queryForList(type: Class<D>, query: Nickel, parameter: List<Any>): List<D>? {
+        return bucket
+                .query(query.toNickelQuery(parameter))
                 .map { it -> it.value().toObject(type) }
     }
 }
